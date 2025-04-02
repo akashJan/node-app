@@ -57,13 +57,38 @@ app.get("/students", async (request, response) => {
 });
 
 // To update the resource
-app.put("/update", (request, response) => {
-  response.send(`Student updated successfully: ${request.url}`);
+// app.put("/update", (request, response) => {
+//   response.send(`Student updated successfully: ${request.url}`);
+// });
+
+// To update the resource
+app.put("/update", async (request, response) => {
+  const { name, college, marks } = request.body;
+  const studentDocument = await Student.findOneAndUpdate(
+    { marks: marks }, // Find the students by marks = 70
+    { name: name, college: college }, // Update the fields
+    { new: true, upsert: true }
+  );
+  response.status(200).json(studentDocument);
 });
 
 // To delete the resource
-app.delete("/delete", (request, response) => {
-  response.send(`Student deleted successfully: ${request.url}`);
+// app.delete("/delete", (request, response) => {
+//   response.send(`Student deleted successfully: ${request.url}`);
+// });
+
+// To delete the resource using particular field
+// http://localhost:8080/delete/555
+app.delete("/delete/:mrk", async (request, response) => {
+  const mrk = request.params.mrk;
+  const deletedStudent = await Student.findOneAndDelete({ marks: mrk });
+  if (!deletedStudent) {
+   return response.status(404).json({
+      status: 404,
+      message: `Not Found, Student with marks: ${mrk}`,
+    });
+  }
+  return response.status(200).json(deletedStudent);
 });
 
 app.listen(8081, () => {

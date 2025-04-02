@@ -10,6 +10,6 @@ console.log(`File Extension is: ${path.extname(file)}`);
 
 const filePath =
   "/Users/gajanan/Documents/CODEMIND/Repo/node-app/dir1/dir2/test.txt";
-
+// C:\Users\janak\Desktop\Doc\Resume
 console.log(`Base Name: ${path.basename(filePath)}`);
 console.log(`Directory  Name: ${path.dirname(filePath)}`);
